@@ -16,12 +16,10 @@ func EncodeQuery(baseQuery map[string]string) *bytes.Buffer {
 	return bytes.NewBuffer(jsonResult)
 }
 
-var PacksQuery = map[string]string{
-	"query": `query GetSupply ($tokenId: ID!) {
-        erc1155Tokens ( where : { contract : $tokenId } ) {
-          totalSupply {
-            value
-          }
-        }
-    }`,
+func PacksQuery(tokenId string) map[string]string {
+	var payload = map[string]string{
+		"query": fmt.Sprintf("query { erc1155Tokens ( where : { contract : \"%s\" } ) { totalSupply { value } } }", tokenId),
+	}
+
+	return payload
 }

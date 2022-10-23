@@ -15,7 +15,8 @@ func main() {
 	http.HandleFunc("/", func(rw http.ResponseWriter, req *http.Request) {
 		apiKey := enders.GetEnvVars("SUBGRAPH_API")
 
-		toQuery := enders.EncodeQuery(enders.PacksQuery)
+		rawQuery := enders.PacksQuery(`0xad6f94bdefb6d5ae941392da5224ed083ae33adc`)
+		toQuery := enders.EncodeQuery(rawQuery)
 		newRequest, _ := http.NewRequest(
 			"POST",
 			apiKey,
