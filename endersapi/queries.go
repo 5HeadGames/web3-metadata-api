@@ -23,3 +23,19 @@ func PacksQuery(tokenId string) map[string]string {
 
 	return payload
 }
+
+func SalesQuery(sellerAddress string) map[string]string {
+	var payload = map[string]string{
+		"query": fmt.Sprintf("query {sales (where : {seller : \"%s\" }, orderBy : timestamp, orderDirection: desc) {seller{id}, nft{contract {id}}, timestamp}}", sellerAddress),
+	}
+
+	return payload
+}
+
+func BuysQuery(buyerAddress string) map[string]string {
+	var payload = map[string]string{
+		"query": fmt.Sprintf("query {buys ( where : { buyer : \"%s\" } ) {buyer{id}, sale{seller{id}, nft{contract {id}}}}}", buyerAddress),
+	}
+
+	return payload
+}
