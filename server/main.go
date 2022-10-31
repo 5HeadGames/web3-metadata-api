@@ -1,40 +1,41 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
-	"time"
-
-	enders "github.com/5HeadGames/web3-metadata-api/endersapi"
 )
 
+func makeReqest(encodedQuery *bytes.Buffer, apiKey string) *http.Request {
+	toRequest, _ := http.NewRequest(
+		"POST",
+		apiKey,
+		encodedQuery)
+	toRequest.Header.Set("Content-Type", "application/json")
+	return toRequest
+}
+
 func main() {
+	// apiKey := enders.GetEnvVars("SUBGRAPH_API")
 
-	http.HandleFunc("/", func(rw http.ResponseWriter, req *http.Request) {
-		apiKey := enders.GetEnvVars("SUBGRAPH_API")
+	http.HandleFunc("/", func(rw http.ResponseWriter, _ *http.Request) {
 
-		rawQuery := enders.PacksQuery(`0xad6f94bdefb6d5ae941392da5224ed083ae33adc`)
-		toQuery := enders.EncodeQuery(rawQuery)
-		newRequest, _ := http.NewRequest(
-			"POST",
-			apiKey,
-			toQuery)
-		newRequest.Header.Set("Content-Type", "application/json")
-		client := &http.Client{Timeout: time.Second * 5}
-		response, err := client.Do(newRequest)
-		if err != nil {
-			fmt.Printf("Error processing request %v", err)
-		}
+		rw.Write([]byte("Enders Subgraph API"))
 
-		responseData, err := ioutil.ReadAll(response.Body)
+		// client := &http.Client{Timeout: time.Second * 5}
+		// response, err := client.Do(newRequest)
+		// if err != nil {
+		// 	fmt.Printf("Error processing request %v", err)
+		// }
 
-		if err != nil {
-			fmt.Printf("Error reading data response %v", err)
-		}
+		// responseData, err := ioutil.ReadAll(response.Body)
 
-		fmt.Println(string(responseData))
+		// if err != nil {
+		// 	fmt.Printf("Error reading data response %v", err)
+		// }
+
+		// fmt.Println(string(responseData))
 	})
 
 	http.HandleFunc("/trades", func(rw http.ResponseWriter, req *http.Request) {
