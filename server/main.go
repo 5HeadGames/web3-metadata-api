@@ -20,6 +20,25 @@ func buildReqest(encodedQuery *bytes.Buffer, graphApi string) *http.Request {
 	return toRequest
 }
 
+func requestData(rawQuery map[string]string, endpoint string) []byte {
+	newRequest := buildReqest(enders.EncodeQuery(rawQuery), endpoint)
+
+	client := &http.Client{Timeout: time.Second * 5}
+	response, err := client.Do(newRequest)
+
+	if err != nil {
+		fmt.Printf("Error processing request %v", err)
+	}
+
+	responseData, err := io.ReadAll(response.Body)
+
+	if err != nil {
+		fmt.Printf("Error reading data response %v", err)
+	}
+
+	return responseData
+}
+
 func main() {
 	apiKey := enders.GetEnvVars("SUBGRAPH_API")
 
@@ -31,64 +50,28 @@ func main() {
 	http.HandleFunc("/packs", func(rw http.ResponseWriter, req *http.Request) {
 		address := req.URL.Query().Get("contractAddress")
 		toQuery := enders.PacksQuery(address)
-		formattedRequest := buildReqest(enders.EncodeQuery(toQuery), apiKey)
 
-		client := &http.Client{Timeout: time.Second * 5}
-		response, err := client.Do(formattedRequest)
+		resultData := requestData(toQuery, apiKey)
 
-		if err != nil {
-			fmt.Printf("Error processing request %v", err)
-		}
-
-		responseData, err := io.ReadAll(response.Body)
-
-		if err != nil {
-			fmt.Printf("Error reading data response %v", err)
-		}
-
-		rw.Write(responseData)
+		rw.Write(resultData)
 	})
 
 	http.HandleFunc("/sales", func(rw http.ResponseWriter, req *http.Request) {
 		address := req.URL.Query().Get("sellerAddress")
 		toQuery := enders.SalesQuery(address)
-		formattedRequest := buildReqest(enders.EncodeQuery(toQuery), apiKey)
 
-		client := &http.Client{Timeout: time.Second * 5}
-		response, err := client.Do(formattedRequest)
+		resultData := requestData(toQuery, apiKey)
 
-		if err != nil {
-			fmt.Printf("Error processing request %v", err)
-		}
-
-		responseData, err := io.ReadAll(response.Body)
-
-		if err != nil {
-			fmt.Printf("Error reading data response %v", err)
-		}
-
-		rw.Write(responseData)
+		rw.Write(resultData)
 	})
 
 	http.HandleFunc("/buys", func(rw http.ResponseWriter, req *http.Request) {
 		address := req.URL.Query().Get("buyerAddress")
 		toQuery := enders.BuysQuery(address)
-		formattedRequest := buildReqest(enders.EncodeQuery(toQuery), apiKey)
 
-		client := &http.Client{Timeout: time.Second * 5}
-		response, err := client.Do(formattedRequest)
+		resultData := requestData(toQuery, apiKey)
 
-		if err != nil {
-			fmt.Printf("Error processing request %v", err)
-		}
-
-		responseData, err := io.ReadAll(response.Body)
-
-		if err != nil {
-			fmt.Printf("Error reading data response %v", err)
-		}
-
-		rw.Write(responseData)
+		rw.Write(resultData)
 	})
 
 	fmt.Println("Server listening on port 8080")
