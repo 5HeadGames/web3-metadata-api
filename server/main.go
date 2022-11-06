@@ -69,22 +69,38 @@ func main() {
 		c.IndentedJSON(http.StatusOK, decodedResult)
 	})
 
-	http.HandleFunc("/sales", func(rw http.ResponseWriter, req *http.Request) {
-		address := req.URL.Query().Get("sellerAddress")
+	route.GET("/sales", func(c *gin.Context) {
+		address := c.Query("sellerAddress")
 		toQuery := enders.SalesQuery(address)
 
-		resultData := requestData(toQuery, apiKey)
+		rawResult := requestData(toQuery, apiKey)
 
-		rw.Write(resultData)
+		decodedResult := enders.SalesResponse{}
+
+		jsonErr := json.Unmarshal(rawResult, &decodedResult)
+
+		if jsonErr != nil {
+			fmt.Println(jsonErr)
+		}
+
+		c.IndentedJSON(http.StatusOK, decodedResult)
 	})
 
-	http.HandleFunc("/buys", func(rw http.ResponseWriter, req *http.Request) {
-		address := req.URL.Query().Get("buyerAddress")
+	route.GET("/buys", func(c *gin.Context) {
+		address := c.Query("buyerAddress")
 		toQuery := enders.BuysQuery(address)
 
-		resultData := requestData(toQuery, apiKey)
+		rawResult := requestData(toQuery, apiKey)
 
-		rw.Write(resultData)
+		decodedResult := enders.BuysResponse{}
+
+		jsonErr := json.Unmarshal(rawResult, &decodedResult)
+
+		if jsonErr != nil {
+			fmt.Println(jsonErr)
+		}
+
+		c.IndentedJSON(http.StatusOK, decodedResult)
 	})
 
 	fmt.Println("Server listening on port 8080")
