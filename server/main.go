@@ -2,11 +2,14 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/gin-gonic/gin"
 
 	enders "github.com/5HeadGames/web3-metadata-api/endersapi"
 )
@@ -41,19 +44,29 @@ func requestData(rawQuery map[string]string, endpoint string) []byte {
 
 func main() {
 	apiKey := enders.GetEnvVars("SUBGRAPH_API")
+	route := gin.Default()
 
-	http.HandleFunc("/", func(rw http.ResponseWriter, _ *http.Request) {
+	route.GET("/", func(c *gin.Context) {
 
-		rw.Write([]byte("Enders Subgraph API"))
+		c.IndentedJSON(http.StatusOK, map[string]string{
+			"message": "Enders Subgraph API",
+		})
 	})
 
-	http.HandleFunc("/packs", func(rw http.ResponseWriter, req *http.Request) {
-		address := req.URL.Query().Get("contractAddress")
+	route.GET("/packs", func(c *gin.Context) {
+		address := c.Query("contractAddress")
 		toQuery := enders.PacksQuery(address)
 
-		resultData := requestData(toQuery, apiKey)
+		rawResult := requestData(toQuery, apiKey)
 
-		rw.Write(resultData)
+		decodedResult := enders.PacksResponse{}
+		jsonErr := json.Unmarshal(rawResult, &decodedResult)
+
+		if jsonErr != nil {
+			fmt.Println(jsonErr)
+		}
+
+		c.IndentedJSON(http.StatusOK, decodedResult)
 	})
 
 	http.HandleFunc("/sales", func(rw http.ResponseWriter, req *http.Request) {
@@ -76,6 +89,6 @@ func main() {
 
 	fmt.Println("Server listening on port 8080")
 	log.Panic(
-		http.ListenAndServe(":8080", nil),
+		route.Run("localhost:8080"),
 	)
 }
