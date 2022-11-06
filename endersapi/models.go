@@ -3,7 +3,7 @@ package endersapi
 type erc1155Tokens struct {
 	Erc1155Tokens []struct {
 		TotalSupply struct {
-			Value float32 `json:"value"`
+			Value string `json:"value"`
 		} `json:"totalSupply"`
 	} `json:"erc1155Tokens"`
 }
