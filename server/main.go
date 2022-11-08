@@ -49,7 +49,7 @@ func main() {
 	route.GET("/", func(c *gin.Context) {
 
 		c.IndentedJSON(http.StatusOK, map[string]string{
-			"message": "Enders Subgraph API",
+			"message": "Enders API",
 		})
 	})
 
