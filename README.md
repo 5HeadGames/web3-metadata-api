@@ -11,6 +11,7 @@ Go REST API to serve metadata indexed from a subgraph and a database containing 
 **Method**: GET
 **Query Params**: 
 * contractAddress (string): Address for requested erc1155 token
+
 **Return Type**: `{ data: [erc1155Tokens: []struct {
             totalSupply: struct {
                 value: string
@@ -18,7 +19,9 @@ Go REST API to serve metadata indexed from a subgraph and a database containing 
         } ] 
     }
 `
+
 **Request Example**: `http://api-gateway-example/packs?contractAddress=0xad...ac`
+
 **Response Example**: `{
     "data": {
         "erc1155Tokens": [
@@ -40,6 +43,7 @@ Go REST API to serve metadata indexed from a subgraph and a database containing 
 **Method**: GET
 **Query Params**:
 * sellerAddress (string): The user address which created the sale transaction.
+
 **Return Type**: `{ data: [ sales: []struct {
             seller: struct {
                 id: string
@@ -53,7 +57,9 @@ Go REST API to serve metadata indexed from a subgraph and a database containing 
         } ]
     }
 `
+
 **Request Example**: `http://api-gateway-example/sales?sellerAddress=0xb9...cd`
+
 **Response Example**: `{
     "data": {
         "sales": [
@@ -87,6 +93,7 @@ Go REST API to serve metadata indexed from a subgraph and a database containing 
 **Method**: GET
 **Query Params**:
 * buyerAddress: The user address which initiated the buy transaction.
+
 **Return Type**: ` { data : [ buys: struct {
             buyer: struct {
                 id: string
@@ -102,7 +109,9 @@ Go REST API to serve metadata indexed from a subgraph and a database containing 
         } ] 
     }
 `
+
 **Request Example**: `http://api-gateway-example/buys?buyerAddress=0x35....1e`
+
 **Response Example**: `{
     "data": {
         "buys": [
