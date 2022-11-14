@@ -10,15 +10,20 @@ type erc1155Tokens struct {
 
 type sales struct {
 	Sales []struct {
-		Seller struct {
-			Id string `json:"id"`
-		} `json:"seller"`
-		Nft struct {
+		Amount   string `json:"amount"`
+		Duration string `json:"duration"`
+		Nft      struct {
+			Id       string `json:"id"`
 			Contract struct {
 				Id string `json:"id"`
 			} `json:"contract"`
 		} `json:"nft"`
-		Timestamp string `json:"timestamp"`
+		Price  string `json:"price"`
+		Seller struct {
+			Id string `json:"id"`
+		} `json:"seller"`
+		Timestamp string `json:"startedAt"`
+		Status    string `json:"status"`
 	} `json:"sales"`
 }
 
