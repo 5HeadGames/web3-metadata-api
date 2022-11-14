@@ -22,7 +22,7 @@ type sales struct {
 		Seller struct {
 			Id string `json:"id"`
 		} `json:"seller"`
-		Timestamp string `json:"startedAt"`
+		Timestamp string `json:"timestamp"`
 		Status    string `json:"status"`
 	} `json:"sales"`
 }
@@ -33,15 +33,18 @@ type buys struct {
 			Id string `json:"id"`
 		} `json:"buyer"`
 		Sale struct {
+			Id     string `json:"id"`
 			Seller struct {
 				Id string `json:"id"`
 			} `json:"seller"`
+			Nft struct {
+				Id       string `json:"id"`
+				Contract struct {
+					Id string `json:"id"`
+				} `json:"contract"`
+			} `json:"nft"`
 		} `json:"sale"`
-		Nft struct {
-			Contract struct {
-				Id string `json:"id"`
-			} `json:"contract"`
-		} `json:"nft"`
+		Timestamp string `json:"timestamp"`
 	} `json:"buys"`
 }
 
