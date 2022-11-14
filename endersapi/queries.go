@@ -45,7 +45,7 @@ func AllSalesQuery() map[string]string {
 
 func BuysQuery(buyerAddress string) map[string]string {
 	var payload = map[string]string{
-		"query": fmt.Sprintf("query {buys ( where : { buyer : \"%s\" } ) {buyer{id}, sale{seller{id}, nft{contract {id}}}}}", buyerAddress),
+		"query": fmt.Sprintf("query {buys ( where : { buyer : \"%s\" } ) {buyer{id}, sale{id, seller{id}, nft{id, contract {id}}}, timestamp}}", buyerAddress),
 	}
 
 	return payload
