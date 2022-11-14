@@ -71,7 +71,13 @@ func main() {
 
 	route.GET("/sales", func(c *gin.Context) {
 		address := c.Query("sellerAddress")
-		toQuery := enders.SalesQuery(address)
+		var toQuery map[string]string
+
+		if address == "" {
+			toQuery = enders.AllSalesQuery()
+		} else {
+			toQuery = enders.SalesQuery(address)
+		}
 
 		rawResult := requestData(toQuery, apiKey)
 
