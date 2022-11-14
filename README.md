@@ -42,18 +42,23 @@ Go REST API to serve metadata indexed from a subgraph and a database containing 
 ### "/sales"
 **Method**: GET
 **Query Params**:
-* sellerAddress (string): The user address which created the sale transaction.
+* OPTIONAL sellerAddress (string): The user address which created the sale transaction.
 
 **Return Type**: `{ data: [ sales: []struct {
+            ammount: string,
+            duration: string,
+            price: string,
             seller: struct {
                 id: string
             },
             nft: struct {
+                id: string,
                 contract: struct {
                     id: string
                 }
-            }
-            timestamp: string
+            },
+            timestamp: string,
+            status: string
         } ]
     }
 `
@@ -64,26 +69,36 @@ Go REST API to serve metadata indexed from a subgraph and a database containing 
     "data": {
         "sales": [
             {
-                "seller": {
-                    "id": "0xb9602f2442da97651d5f7e0435a4733b1a1145cd"
-                },
+                "amount": "1942",
+                "duration": "8640000000",
                 "nft": {
+                    "id": "0xb90dc9e354001e6260de670edd6abadb890c6ac9/0x3",
                     "contract": {
                         "id": "0xb90dc9e354001e6260de670edd6abadb890c6ac9"
                     }
                 },
-                "timestamp": "1653696067"
+                "price": "4836642400000000000000",
+                "seller": {
+                    "id": "0xb9602f2442da97651d5f7e0435a4733b1a1145cd"
+                },
+                "timestamp": "1653696067",
+                "status": "0"
             },
             {
-                "seller": {
-                    "id": "0xb9602f2442da97651d5f7e0435a4733b1a1145cd"
-                },
+                "amount": "3973",
+                "duration": "8640000000",
                 "nft": {
+                    "id": "0xb90dc9e354001e6260de670edd6abadb890c6ac9/0x2",
                     "contract": {
                         "id": "0xb90dc9e354001e6260de670edd6abadb890c6ac9"
                     }
                 },
-                "timestamp": "1653696028"
+                "price": "2418964600000000000000",
+                "seller": {
+                    "id": "0xb9602f2442da97651d5f7e0435a4733b1a1145cd"
+                },
+                "timestamp": "1653696028",
+                "status": "0"
             }, ...
         ]
     }
@@ -99,13 +114,18 @@ Go REST API to serve metadata indexed from a subgraph and a database containing 
                 id: string
             },
             sale : struct {
-                id: string
-            },
-            nft : struct {
-                contract: struct {
+                id: string,
+                seller: struct {
                     id: string
                 }
-            }
+                nft : struct {
+                    id: string,
+                    contract: struct {
+                        id: string
+                    }
+                }
+            },
+            timestamp: string
         } ] 
     }
 `
@@ -120,15 +140,18 @@ Go REST API to serve metadata indexed from a subgraph and a database containing 
                     "id": "0x352c6b116bd19928b487a627b936753f71a7cd1e"
                 },
                 "sale": {
+                    "id": "0x463b5fe6dd5633e6fecb286fdbab9d3a9a75b038/0x1",
                     "seller": {
                         "id": "0xb9602f2442da97651d5f7e0435a4733b1a1145cd"
+                    },
+                    "nft": {
+                        "id": "0xb90dc9e354001e6260de670edd6abadb890c6ac9/0x1",
+                        "contract": {
+                            "id": "0xb90dc9e354001e6260de670edd6abadb890c6ac9"
+                        }
                     }
                 },
-                "nft": {
-                    "contract": {
-                        "id": ""
-                    }
-                }
+                "timestamp": "1653938286"
             }, ...
         ]
     }
